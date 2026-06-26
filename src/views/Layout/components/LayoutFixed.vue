@@ -1,21 +1,13 @@
 <script setup>
+import { useCategoryStore } from '@/stores/category';
 
-import { getCategoryAPI } from '@/apis/layout';
-import { onMounted, ref } from 'vue';
-const categoryList = ref([])
 //使用vueuse获取滚动的距离
 import { useScroll } from '@vueuse/core';
 const {y} = useScroll(window)
 
-// 获取数据的应用函数
+//使用pinia中的数据
+const categoryStore = useCategoryStore()
 
-const getCategory = async () =>{
-  const res = await getCategoryAPI()
-  categoryList.value = res.result
-} 
-onMounted(()=>{
-    getCategory()
-})
 </script>
 
 <template>
@@ -24,7 +16,7 @@ onMounted(()=>{
       <RouterLink class="logo" to="/" />
       <!-- 导航区域 -->
       <ul class="app-header-nav ">
-        <li class="home" v-for="item in categoryList" :key="item.id">
+        <li class="home" v-for="item in categoryStore.categoryList" :key="item.id">
           <RouterLink to="/">{{ item.name }}</RouterLink>
         </li>
         
